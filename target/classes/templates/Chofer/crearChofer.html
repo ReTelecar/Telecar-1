@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<!-- Designined by CodingLab | www.youtube.com/codinglabyt -->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="Inicio :: head">
+</head>
+<body>
+<div th:replace="Inicio :: div_side_bar"></div>
+
+<section class="home-section" style="overflow-y: auto;">
+  <div class="home-content">
+    <i class='bx bx-menu'></i>
+    <span class="text">Carga // Chofer</span>
+  </div>
+
+  <br>
+  <div class="col-md-4">
+    <div>
+
+      <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+              data-bs-target="#exampleModal" th:if="${cargado == false}">
+        Asiganar Vehiculo
+      </button>
+
+      <div class="modal fade" id="exampleModal" tabindex="-1"
+           aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="exampleModalLabel">Lista de
+                Personas</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal"
+                      aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+              <form method="post" th:action="@{/chofer/asignarV/}">
+
+                <input type="search" name="buscador" id="buscador"
+                       placeholder="Buscar...">
+                <br>
+                <table class="table table-striped">
+                  <thead>
+                  <tr>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Apellido</th>
+                    <th scope="col">DNI</th>
+                    <th scope="col">Seleccionar</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr class="articulo" th:each="propietario: ${propietarios}">
+                    <td th:text="${propietario.persona.nombre}"></td>
+                    <td th:text="${propietario.persona.apellido}"></td>
+                    <td th:text="${propietario.persona.dni}"></td>
+                    <td><input type="radio"
+                               name="propietarioID"
+                               th:value="${propietario.id}">
+                    <td>
+                  </tr>
+                  </tbody>
+                </table>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary"
+                          data-bs-dismiss="modal">
+                    Cerrar
+                  </button>
+                  <button type="submit" class="btn btn-primary">Guardar Cambios
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <form th:action="@{/chofer/creado}" method="post" th:object="${chofer}">
+      <div th:if="${chofer.vehiculo != null}">
+        <h5>Vehiculo Asignado</h5>
+        <div class="input-group mb-3">
+          <span class="input-group-text" th:object="${vehiculo}"
+                th:text="${propietario.persona.nombre}"></span>
+          <span class="input-group-text" th:object="${persona}"
+                th:text="${propietario.persona.dni}"></span>
+        </div>
+        <label for="name">DOMINIO:</label>
+        <input type="text" id="name" th:field="*{dominio}" required />
+        <label for="apellido">MARCA</label>
+        <input type="text" id="apellido" th:field="*{marca}" required />
+        <label for="dni">MODELO:</label>
+        <input type="text" id="dni" th:field="*{modelo}" required />
+        <label for="cuil">TIPO:</label>
+        <input type="text" id="cuil" th:field="*{tipo}" required />
+        <label for="chasis">CHASIS:</label>
+        <input type="text" id="chasis" th:field="*{chasis}" required />
+        <label for="motor">MOTOR:</label>
+        <input type="text" id="motor" th:field="*{motor}" required />
+        <label for="estado">ESTADO:</label>
+        <input type="text" id="estado" th:field="*{estado}" required />
+        <label for="comfort">COMFORT:</label>
+        <input type="text" id="comfort" th:field="*{comfort}" required />
+        <label for="foto1">IMAGEN DEL VEHICULO:</label>
+        <input type="text" id="foto1" th:field="*{foto1}" required />
+        <input type="text" id="foto1" th:field="*{foto2}"  />
+        <input type="text" id="foto1" th:field="*{foto3}"  />
+        <input type="text" id="foto1" th:field="*{foto4}"  />
+
+        <br>
+        <button type="submit">REGISTRAR</button>
+      </div>
+    </form>
+  </div>
+</section>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+        crossorigin="anonymous"></script>
+<script src="/js/script.js"></script>
+<script src="/js/jsfilter.js"></script>
+</body>
+</html>

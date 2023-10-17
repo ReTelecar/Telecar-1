@@ -48,26 +48,18 @@ public class PropietarioController {
             model.put("error", e.getMessage());
             return "Propietario/crearPropietario.html";
         }
-        return "Notificacion.html";
+        return "Propietario/crearPropietario.html";
     }
 
     // Carga PPpersona Post
     @PreAuthorize("isAuthenticated()")
     @RequestMapping(value = "/asignarP", method = RequestMethod.POST)
     public String asignarPersona(@ModelAttribute("propietario") Propietario p, ModelMap model) {
-        try {
-            propietarioService.cargarPersona(p);
 
             model.addAttribute("propietario", p);
 
             List<Persona> personas = persona_repositorio.findAll();
             model.addAttribute("personas", personas);
-
-        }catch (MiException ex){
-            model.put("error", ex.getMessage());
-
-            return "Propietario/crearPropietario.html";
-        }
 
 
         return "Propietario/crearPropietario.html";

@@ -41,6 +41,68 @@
                 <table class="table table-striped">
                   <thead>
                   <tr>
+                    <th scope="col">MARCA</th>
+                    <th scope="col">MODELO</th>
+                    <th scope="col">TIPO</th>
+                    <th scope="col">CHASIS</th>
+                    <th scope="col">SELECCIONAR</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr class="articulo" th:each="vehiculo: ${vehiculos}">
+                    <td th:text="${vehiculo.marca}"></td>
+                    <td th:text="${vehiculo.modelo}"></td>
+                    <td th:text="${vehiculo.tipo}"></td>
+                    <td th:text="${vehiculo.chasis}"><td>
+                    <td><input type="radio"
+                               name="vehiculoID"
+                               th:value="${vehiculo.id}">
+                    <td>
+                  </tr>
+                  </tbody>
+                </table>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary"
+                          data-bs-dismiss="modal">
+                    Cerrar
+                  </button>
+                  <button type="submit" class="btn btn-primary">Guardar Cambios
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+
+      <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+              data-bs-target="#exampleModal1" th:if="${cargado != false}">
+        Asiganar Persona
+      </button>
+
+      <div class="modal fade" id="exampleModal1" tabindex="-1"
+           aria-labelledby="exampleModalLabel1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="exampleModalLabel1">Lista de
+                Personas</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal"
+                      aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+              <form method="post" th:action="@{/chofer/asignarP/}"
+                    th:object="${chofer}">
+
+                <input type="search" name="buscador" id="buscador"
+                       placeholder="Buscar...">
+                <br>
+                <table class="table table-striped">
+                  <thead>
+                  <tr>
                     <th scope="col">Nombre</th>
                     <th scope="col">Apellido</th>
                     <th scope="col">DNI</th>
@@ -48,13 +110,13 @@
                   </tr>
                   </thead>
                   <tbody>
-                  <tr class="articulo" th:each="propietario: ${propietarios}">
-                    <td th:text="${propietario.persona.nombre}"></td>
-                    <td th:text="${propietario.persona.apellido}"></td>
-                    <td th:text="${propietario.persona.dni}"></td>
+                  <tr class="articulo" th:each="persona: ${personas}">
+                    <td th:text="${persona.nombre}"></td>
+                    <td th:text="${persona.apellido}"></td>
+                    <td th:text="${persona.dni}"></td>
                     <td><input type="radio"
-                               name="propietarioID"
-                               th:value="${propietario.id}">
+                               th:field="*{persona}"
+                               th:value="${persona.id}">
                     <td>
                   </tr>
                   </tbody>
@@ -74,35 +136,27 @@
       </div>
     </div>
     <form th:action="@{/chofer/creado}" method="post" th:object="${chofer}">
-      <div th:if="${chofer.vehiculo != null}">
+      <div th:if="${personaCargado != null}">
         <h5>Vehiculo Asignado</h5>
         <div class="input-group mb-3">
           <span class="input-group-text" th:object="${vehiculo}"
-                th:text="${propietario.persona.nombre}"></span>
-          <span class="input-group-text" th:object="${persona}"
-                th:text="${propietario.persona.dni}"></span>
+                th:text="${vehiculo.chasis}"></span>
+          <span class="input-group-text" th:object="${vehiculo}"
+                th:text="${vehiculo.marca}"></span>
+          <span class="input-group-text" th:object="${vehiculo}"
+                th:text="${vehiculo.modelo}"></span>
+          <span class="input-group-text" th:object="${vehiculo}"
+                th:text="${vehiculo.tipo}"></span>
         </div>
-        <label for="name">DOMINIO:</label>
-        <input type="text" id="name" th:field="*{dominio}" required />
-        <label for="apellido">MARCA</label>
-        <input type="text" id="apellido" th:field="*{marca}" required />
-        <label for="dni">MODELO:</label>
-        <input type="text" id="dni" th:field="*{modelo}" required />
-        <label for="cuil">TIPO:</label>
-        <input type="text" id="cuil" th:field="*{tipo}" required />
-        <label for="chasis">CHASIS:</label>
-        <input type="text" id="chasis" th:field="*{chasis}" required />
-        <label for="motor">MOTOR:</label>
-        <input type="text" id="motor" th:field="*{motor}" required />
-        <label for="estado">ESTADO:</label>
-        <input type="text" id="estado" th:field="*{estado}" required />
-        <label for="comfort">COMFORT:</label>
-        <input type="text" id="comfort" th:field="*{comfort}" required />
-        <label for="foto1">IMAGEN DEL VEHICULO:</label>
-        <input type="text" id="foto1" th:field="*{foto1}" required />
-        <input type="text" id="foto1" th:field="*{foto2}"  />
-        <input type="text" id="foto1" th:field="*{foto3}"  />
-        <input type="text" id="foto1" th:field="*{foto4}"  />
+        <label for="telefono">TELEFONO CONTACTO:</label>
+        <input type="text" id="telefono" th:field="*{tel_cont_1}" required />
+        <label for="name">DESCRIPCION:</label>
+        <input type="text" id="name" th:field="*{desc_cont_1}" required />
+        <label for="telefono1">TELEFONO CONTACTO RESPALDO:</label>
+        <input type="text" id="telefono1" th:field="*{tel_cont_2}" required />
+        <label for="name1">DESCRIPCION:</label>
+        <input type="text" id="name1" th:field="*{desc_cont_2}" required />
+
 
         <br>
         <button type="submit">REGISTRAR</button>

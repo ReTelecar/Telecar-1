@@ -53,9 +53,24 @@ public class VehiculoController {
 
     @PreAuthorize("isAuthenticated()")
     @RequestMapping(value = "/creado", method = RequestMethod.POST)
-    public String crearPersona(@ModelAttribute("vehiculo") Vehiculo coche, ModelMap model) throws MiException {
+    public String crearPersona(@ModelAttribute("vehiculo") Vehiculo v, ModelMap model,
+                               @RequestParam(name = "propietarioID", required = false)
+                               Long id) throws MiException {
         try {
-            vehiculoService.crearVehiculo(coche);
+            vehiculoService.crearVehiculo(v);
+
+            Propietario_Vehiculo propietarioVehiculo = new Propietario_Vehiculo();
+
+            propietarioVehiculo.setVehiculo(v);
+            propietarioVehiculo.setPropietario(propietarioRepositorio.findById(id).get());
+            propietarioVehiculo.setActivo(true);
+            propietarioVehiculo.setFecha_activacion(new Date());
+
+            vehiculoPropietarioRepositorio.save(propietarioVehiculo);
+
+            List<Propietario> propietarios = propietarioRepositorio.findAll();
+            model.addAttribute("propietarios", propietarios);
+
         } catch (MiException e) {
 
             model.addAttribute("vehiculo", new Vehiculo());
@@ -72,16 +87,6 @@ public class VehiculoController {
     @RequestMapping(value = "/asignarP", method = RequestMethod.POST)
     public String asignarPersona(@ModelAttribute("vehiculo") Vehiculo v, @RequestParam(name = "propietarioID", required = false)
             Long id, ModelMap model) {
-        try {
-            vehiculoService.crearVehiculo(v);
-
-            Propietario_Vehiculo propietarioVehiculo = new Propietario_Vehiculo();
-
-            propietarioVehiculo.setVehiculo(v);
-            propietarioVehiculo.setPropietario(propietarioRepositorio.findById(id).get());
-            propietarioVehiculo.setActivo(true);
-            propietarioVehiculo.setFecha_activacion(new Date());
-
             model.addAttribute("vehiculo", v);
 
             model.addAttribute("propietario", propietarioRepositorio.findById(id).get());
@@ -90,12 +95,6 @@ public class VehiculoController {
             model.addAttribute("personas", personas);
 
             model.addAttribute("propietarioCarga", true);
-
-        }catch (MiException ex){
-            model.put("error", ex.getMessage());
-
-            return "Movil/crearVehiculo.html";
-        }
 
 
         return "Movil/crearVehiculo.html";

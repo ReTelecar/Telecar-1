@@ -73,7 +73,7 @@
                 </div>
             </div>
         </div>
-        <form th:action="@{/vehiculo/creado}" method="post" th:object="${vehiculo}">
+        <form th:action="@{/vehiculo/creado}" method="post" th:object="${vehiculo}" enctype="multipart/form-data">
             <div th:if="${propietarioCarga != null}">
                 <h5>Propietario Asignado</h5>
                 <div class="input-group mb-3">
@@ -82,6 +82,11 @@
                     <span class="input-group-text" th:object="${propietario}"
                           th:text="${propietario.persona.dni}"></span>
                 </div>
+
+                <input type="hidden"
+                       name="propietarioID"
+                       th:value="${propietario.id}">
+
                 <label for="name">DOMINIO:</label>
                 <input type="text" id="name" th:field="*{dominio}" required />
                 <label for="marca">MARCA:</label>
@@ -116,11 +121,12 @@
                 <label for="comfort">AIRE ACONDICIONADO:</label>
                 <input type="radio" name="genero" id="comfort" value="si" th:field="*{aire_acondicionado}"> SI
                 <input type="radio" name="genero" id="comfort"  value="no" th:field="*{aire_acondicionado}"> NO
+                <br>
                 <label for="foto1">IMAGEN DEL VEHICULO:</label>
-                <input type="field" id="foto1" th:field="*{foto1}" required />
-                <input type="field" id="foto1" th:field="*{foto2}"  />
-                <input type="field" id="foto1" th:field="*{foto3}"  />
-                <input type="field" id="foto1" th:field="*{foto4}"  />
+                <input type="field" id="foto1"  />
+                <input type="field" id="foto1"   />
+                <input type="field" id="foto1"   />
+                <input type="field" id="foto1"   />
 
                 <br>
                 <button type="submit">REGISTRAR</button>

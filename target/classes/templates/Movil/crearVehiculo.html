@@ -82,6 +82,11 @@
                     <span class="input-group-text" th:object="${propietario}"
                           th:text="${propietario.persona.dni}"></span>
                 </div>
+
+                <input type="hidden"
+                       name="propietarioID"
+                       th:value="${propietario.id}">
+
                 <label for="name">DOMINIO:</label>
                 <input type="text" id="name" th:field="*{dominio}" required />
                 <label for="marca">MARCA:</label>

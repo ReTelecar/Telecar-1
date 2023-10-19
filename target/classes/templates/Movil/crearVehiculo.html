@@ -1,8 +1,7 @@
 <!DOCTYPE html>
-<!-- Designined by CodingLab | www.youtube.com/codinglabyt -->
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="Inicio :: head">
-</head>
+<!-- Designed by CodingLab | www.youtube.com/codinglabyt -->
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head th:replace="Inicio :: head"></head>
 <body>
 <div th:replace="Inicio :: div_side_bar"></div>
 
@@ -12,127 +11,337 @@
         <span class="text">Carga // Vehiculo</span>
     </div>
 
-    <br>
-    <div class="col-md-4">
-        <div>
+    <div class="container">
+        <div class="row">
+            <!-- Acordeón -->
+            <div class="accordion" id="accordionExample">
+                <!-- Sección para asignar propietario -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingOne">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                            Asignar Propietario
+                        </button>
+                    </h2>
+                    <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne"
+                         data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+                            <!-- Contenido para asignar propietario -->
+                            <div th:if="${propietarioCarga != null}">
+                                <h5>Propietario Asignado</h5>
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text" th:object="${propietario}"
+                                          th:text="${propietario.persona.nombre}"></span>
+                                    <span class="input-group-text" th:object="${propietario}"
+                                          th:text="${propietario.persona.dni}"></span>
+                                </div>
+                            </div>
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                    data-bs-target="#exampleModal" th:if="${propietarioCarga == null}">
+                                Asignar Propietario
+                            </button>
 
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                    data-bs-target="#exampleModal" th:if="${propietarioCarga == null}">
-                Asiganar Propietario
-            </button>
+                            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                                 aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-scrollable">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h1 class="modal-title fs-5" id="exampleModalLabel">Lista de
+                                                Propietarios</h1>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                        </div>
 
-            <div class="modal fade" id="exampleModal" tabindex="-1"
-                 aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-scrollable">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="exampleModalLabel">Lista de
-                                Propietarios</h1>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                    aria-label="Close"></button>
+                                        <div class="modal-body">
+                                            <form method="post" th:action="@{/vehiculo/asignarP/}">
+                                                <th:block th:if="${chofer != null}">
+                                                    <input type="hidden" name="choferID" th:value="${chofer.id}">
+                                                </th:block>
+
+                                                <input type="search" name="buscador" id="buscador"
+                                                       placeholder="Buscar..." class="form-control mb-2"/>
+                                                <table class="table table-striped">
+                                                    <thead>
+                                                    <tr>
+                                                        <th scope="col">Nombre</th>
+                                                        <th scope="col">Apellido</th>
+                                                        <th scope="col">DNI</th>
+                                                        <th scope="col">Seleccionar</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <tr class="articulo" th:each="propietario: ${propietarios}">
+                                                        <td th:text="${propietario.persona.nombre}"></td>
+                                                        <td th:text="${propietario.persona.apellido}"></td>
+                                                        <td th:text="${propietario.persona.dni}"></td>
+                                                        <td>
+                                                            <input type="radio" name="propietarioID"
+                                                                   th:value="${propietario.id}"/>
+                                                        </td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary"
+                                                            data-bs-dismiss="modal">
+                                                        Cerrar
+                                                    </button>
+                                                    <button type="submit" class="btn btn-primary">Guardar Cambios
+                                                    </button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
+                    </div>
+                </div>
 
-                        <div class="modal-body">
-                            <form method="post" th:action="@{/vehiculo/asignarP/}">
+                <!-- Sección para asignar chofer -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingTwo">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                            Asignar Chofer
+                        </button>
+                    </h2>
+                    <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
+                         data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+                            <div th:if="${choferCarga != null}">
+                                <h5>Chofer Asignado</h5>
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text" th:object="${chofer}"
+                                          th:text="${chofer.persona.nombre}"></span>
+                                    <span class="input-group-text" th:object="${chofer}"
+                                          th:text="${chofer.persona.dni}"></span>
+                                </div>
+                            </div>
+                            <!-- Contenido para asignar chofer -->
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                    data-bs-target="#exampleModal1" th:if="${choferCarga == null}">
+                                Asignar Chofer
+                            </button>
+                            <div class="modal fade" id="exampleModal1" tabindex="-1"
+                                 aria-labelledby="exampleModalLabel1" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-scrollable">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h1 class="modal-title fs-5" id="exampleModalLabel1">Lista de Choferes</h1>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form method="post" th:action="@{/vehiculo/asignarC/}">
+                                                <th:block th:if="${propietario != null}">
+                                                    <input type="hidden" name="propietarioID"
+                                                           th:value="${propietario.id}"/>
+                                                </th:block>
+                                                <input type="search" name="buscador" id="buscador"
+                                                       placeholder="Buscar..." class="form-control mb-2"/>
+                                                <table class="table table-striped">
+                                                    <thead>
+                                                    <tr>
+                                                        <th scope="col">Nombre</th>
+                                                        <th scope="col">Apellido</th>
+                                                        <th scope="col">DNI</th>
+                                                        <th scope="col">Seleccionar</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <tr class="articulo" th:each="chofer: ${choferes}">
+                                                        <td th:text="${chofer.persona.nombre}"></td>
+                                                        <td th:text="${chofer.persona.apellido}"></td>
+                                                        <td th:text="${chofer.persona.dni}"></td>
+                                                        <td>
+                                                            <input type="radio" name="choferID"
+                                                                   th:value="${chofer.id}"/>
+                                                        </td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary"
+                                                            data-bs-dismiss="modal">Cerrar
+                                                    </button>
+                                                    <button type="submit" class="btn btn-primary">Guardar Cambios
+                                                    </button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-                                <input type="search" name="buscador" id="buscador"
-                                       placeholder="Buscar...">
-                                <br>
-                                <table class="table table-striped">
-                                    <thead>
-                                    <tr>
-                                        <th scope="col">Nombre</th>
-                                        <th scope="col">Apellido</th>
-                                        <th scope="col">DNI</th>
-                                        <th scope="col">Seleccionar</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr class="articulo" th:each="propietario: ${propietarios}">
-                                        <td th:text="${propietario.persona.nombre}"></td>
-                                        <td th:text="${propietario.persona.apellido}"></td>
-                                        <td th:text="${propietario.persona.dni}"></td>
-                                        <td><input type="radio"
-                                                   name="propietarioID"
-                                                   th:value="${propietario.id}">
-                                        <td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary"
-                                            data-bs-dismiss="modal">
-                                        Cerrar
-                                    </button>
-                                    <button type="submit" class="btn btn-primary">Guardar Cambios
-                                    </button>
+                <!-- Sección para el resto del formulario -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingThree">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
+                            Otros Detalles del Vehículo
+                        </button>
+                    </h2>
+                    <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree"
+                         data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+                            <!-- Contenido para el resto del formulario -->
+                            <form th:action="@{/vehiculo/creado}" method="post" th:object="${vehiculo}"
+                                  enctype="multipart/form-data">
+                                <div th:if="${propietarioCarga != null}">
+                                    <div th:if="${choferCarga != null}">
+                                        <input type="hidden" name="propietarioID" th:value="${propietario.id}"/>
+                                        <input type="hidden" name="choferID" th:value="${chofer.id}"/>
+                                        <label for="name">DOMINIO:</label>
+                                        <input type="text" id="name" th:field="*{dominio}" required
+                                               class="form-control"/>
+                                        <label for="marca">MARCA:</label>
+                                        <input type="text" id="marcaInput" placeholder="Escribe la marca"
+                                               oninput="filtrarMarcas()" class="form-control mb-2"/>
+                                        <select id="marca" name="marca" required onchange="seleccionarMarca()"
+                                                class="form-select">
+                                            <option value="Audi">Audi</option>
+                                            <option value="BMW">BMW</option>
+                                            <option value="Chevrolet">Chevrolet</option>
+                                            <option value="Ford">Ford</option>
+                                            <option value="Honda">Honda</option>
+                                            <option value="Hyundai">Hyundai</option>
+                                            <option value="Kia">Kia</option>
+                                            <option value="Mazda">Mazda</option>
+                                            <option value="Mercedes-Benz">Mercedes-Benz</option>
+                                            <option value="Nissan">Nissan</option>
+                                            <option value="Peugeot">Peugeot</option>
+                                            <option value="Toyota">Toyota</option>
+                                            <option value="Volkswagen">Volkswagen</option>
+                                            <!-- Más marcas aquí -->
+                                        </select>
+                                        <label for="dni">MODELO:</label>
+                                        <input type="text" id="dni" th:field="*{modelo}" required class="form-control"/>
+                                        <label for="cuil">TIPO:</label>
+                                        <input type="text" id="cuil" th:field="*{tipo}" required class="form-control"/>
+                                        <label for="chasis">CHASIS:</label>
+                                        <input type="text" id="chasis" th:field="*{chasis}" required
+                                               class="form-control"/>
+                                        <label for="motor">MOTOR:</label>
+                                        <input type="text" id="motor" th:field="*{motor}" required
+                                               class="form-control"/>
+                                        <label for="estado">ESTADO:</label>
+                                        <input type="text" id="estado" th:field="*{estado}" required
+                                               class="form-control"/>
+                                        <label for="comfort">AIRE ACONDICIONADO:</label>
+                                        <div class="form-check">
+                                            <input type="radio" name="genero" id="comfort_si" value="si"
+                                                   th:field="*{aire_acondicionado}" class="form-check-input"/>
+                                            <label for="comfort_si" class="form-check-label">SI</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input type="radio" name="genero" id="comfort_no" value="no"
+                                                   th:field="*{aire_acondicionado}" class="form-check-input"/>
+                                            <label for="comfort_no" class="form-check-label">NO</label>
+                                        </div>
+                                        <label for="foto1">IMAGEN DEL VEHÍCULO:</label>
+                                        <input type="file" id="foto1"  class="form-control"/>
+                                        <input type="file" id="foto2"  class="form-control"/>
+                                        <input type="file" id="foto3"  class="form-control"/>
+                                        <input type="file" id="foto4"  class="form-control"/>
+                                        <br>
+                                        <button type="submit" class="btn btn-primary">REGISTRAR</button>
+                                    </div>
                                 </div>
                             </form>
                         </div>
                     </div>
                 </div>
+                <!-- Sección de Acordeón Adicional 1 -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingFour">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#collapseFour" aria-expanded="true" aria-controls="collapseFour">
+                            Cedula del Vehiculo
+                        </button>
+                    </h2>
+                    <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour"
+                         data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+                            <form th:action="@{/vehiculo/asignarCedula}" method="post" th:object="${cedula}"
+                                  enctype="multipart/form-data">
+                                <div th:if="${vehiCarga != null}">
+                                    <input type="hidden" name="vehiculoID" th:value="${vehiculo.id}"/>
+                                    <input type="hidden" name="propietarioID" th:value="${propietario.id}"/>
+                                    <input type="hidden" name="choferID" th:value="${chofer.id}"/>
+
+                                    <label for="uso">USO:</label>
+                                    <input type="text" id="uso" th:field="*{uso}" required class="form-control"/>
+                                    <label for="vencimiento">VENCIMIENTO:</label>
+                                    <input type="date" id="vencimiento" th:field="*{fecha_vencimiento}" required
+                                           class="form-control"/>
+
+                                    <label for="fotoc1">IMAGEN DE LA CEDULA:</label>
+                                    <input type="file" id="fotoc1" name="fotoDD" class="form-control"/>
+                                    <input type="file" id="fotoc2" name="fotoDF" class="form-control"/>
+                                    <br>
+                                    <button type="submit" class="btn btn-primary">REGISTRAR</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <!-- Sección de Acordeón Adicional 2 -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingFive">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#collapseFive" aria-expanded="true" aria-controls="collapseFive">
+                            Habilitacion Municipal
+                        </button>
+                    </h2>
+                    <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive"
+                         data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+                            <!-- Contenido del Acordeón 2 -->
+                            Contenido del Acordeón 2.
+                        </div>
+                    </div>
+                </div>
+                <!-- Sección de Acordeón Adicional 3 -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingSix">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#collapseSix" aria-expanded="true" aria-controls="collapseSix">
+                            Seguro del Vehiculo
+                        </button>
+                    </h2>
+                    <div id="collapseSix" class="accordion-collapse collapse" aria-labelledby="headingSix"
+                         data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+                            <!-- Contenido del Acordeón 3 -->
+                            Contenido del Acordeón 3.
+                        </div>
+                    </div>
+                </div>
+                <!-- Sección de Acordeón Adicional 4 -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingSeven">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#collapseSeven" aria-expanded="true" aria-controls="collapseSeven">
+                            Verificacion Tecnica Vehicular (VTV)
+                        </button>
+                    </h2>
+                    <div id="collapseSeven" class="accordion-collapse collapse" aria-labelledby="headingSeven"
+                         data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+                            <!-- Contenido del Acordeón 4 -->
+                            Contenido del Acordeón 4.
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-        <form th:action="@{/vehiculo/creado}" method="post" th:object="${vehiculo}">
-            <div th:if="${propietarioCarga != null}">
-                <h5>Propietario Asignado</h5>
-                <div class="input-group mb-3">
-          <span class="input-group-text" th:object="${propietario}"
-                th:text="${propietario.persona.nombre}"></span>
-                    <span class="input-group-text" th:object="${propietario}"
-                          th:text="${propietario.persona.dni}"></span>
-                </div>
-
-                <input type="hidden"
-                       name="propietarioID"
-                       th:value="${propietario.id}">
-
-                <label for="name">DOMINIO:</label>
-                <input type="text" id="name" th:field="*{dominio}" required />
-                <label for="marca">MARCA:</label>
-                <input type="text" id="marcaInput" placeholder="Escribe la marca" oninput="filtrarMarcas()" />
-
-                <select id="marca" name="marca" required onchange="seleccionarMarca()">
-                    <option value="Audi">Audi</option>
-                    <option value="BMW">BMW</option>
-                    <option value="Chevrolet">Chevrolet</option>
-                    <option value="Ford">Ford</option>
-                    <option value="Honda">Honda</option>
-                    <option value="Hyundai">Hyundai</option>
-                    <option value="Kia">Kia</option>
-                    <option value="Mazda">Mazda</option>
-                    <option value="Mercedes-Benz">Mercedes-Benz</option>
-                    <option value="Nissan">Nissan</option>
-                    <option value="Peugeot">Peugeot</option>
-                    <option value="Toyota">Toyota</option>
-                    <option value="Volkswagen">Volkswagen</option>
-                    <!-- Más marcas aquí -->
-                </select>
-                <label for="dni">MODELO:</label>
-                <input type="text" id="dni" th:field="*{modelo}" required />
-                <label for="cuil">TIPO:</label>
-                <input type="text" id="cuil" th:field="*{tipo}" required />
-                <label for="chasis">CHASIS:</label>
-                <input type="text" id="chasis" th:field="*{chasis}" required />
-                <label for="motor">MOTOR:</label>
-                <input type="text" id="motor" th:field="*{motor}" required />
-                <label for="estado">ESTADO:</label>
-                <input type="text" id="estado" th:field="*{estado}" required />
-                <label for="comfort">AIRE ACONDICIONADO:</label>
-                <input type="radio" name="genero" id="comfort" value="si" th:field="*{aire_acondicionado}"> SI
-                <input type="radio" name="genero" id="comfort"  value="no" th:field="*{aire_acondicionado}"> NO
-                <label for="foto1">IMAGEN DEL VEHICULO:</label>
-                <input type="field" id="foto1" th:field="*{foto1}" required />
-                <input type="field" id="foto1" th:field="*{foto2}"  />
-                <input type="field" id="foto1" th:field="*{foto3}"  />
-                <input type="field" id="foto1" th:field="*{foto4}"  />
-
-                <br>
-                <button type="submit">REGISTRAR</button>
-            </div>
-        </form>
     </div>
 </section>
+
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
@@ -140,28 +349,29 @@
 <script src="/js/script.js"></script>
 <script src="/js/jsfilter.js"></script>
 <script>
-function filtrarMarcas() {
-    var input = document.getElementById("marcaInput");
-    var select = document.getElementById("marca");
-    var filtro = input.value.toUpperCase();
+    function filtrarMarcas() {
+        var input = document.getElementById("marcaInput");
+        var select = document.getElementById("marca");
+        var filtro = input.value.toUpperCase();
 
-    var opciones = select.options;
-    for (var i = 0; i < opciones.length; i++) {
-        var textoOpcion = opciones[i].text.toUpperCase();
-        if (textoOpcion.indexOf(filtro) > -1) {
-            opciones[i].style.display = "";
-        } else {
-            opciones[i].style.display = "none";
+        var opciones = select.options;
+        for (var i = 0; i < opciones.length; i++) {
+            var textoOpcion = opciones[i].text.toUpperCase();
+            if (textoOpcion.indexOf(filtro) > -1) {
+                opciones[i].style.display = "";
+            } else {
+                opciones[i].style.display = "none";
+            }
         }
     }
-}
 
-function seleccionarMarca() {
-    var input = document.getElementById("marcaInput");
-    var select = document.getElementById("marca");
-    var opcionSeleccionada = select.options[select.selectedIndex].text;
-    input.value = opcionSeleccionada;
-}
+    function seleccionarMarca() {
+        var input = document.getElementById("marcaInput");
+        var select = document.getElementById("marca");
+        var opcionSeleccionada = select.options[select.selectedIndex].text;
+        input.value = opcionSeleccionada;
+    }
+
 </script>
 </body>
 </html>

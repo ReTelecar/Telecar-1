@@ -12,6 +12,8 @@ public class Licencia_Conducir {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String categoria;
+
+    private String codigo;
     @OneToOne
     private Persona Persona;
 
@@ -104,5 +106,13 @@ public class Licencia_Conducir {
 
     public void setFecha_Vencimiento(Date fecha_Vencimiento) {
         this.fecha_Vencimiento = fecha_Vencimiento;
+    }
+
+    public String getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(String codigo) {
+        this.codigo = codigo;
     }
 }

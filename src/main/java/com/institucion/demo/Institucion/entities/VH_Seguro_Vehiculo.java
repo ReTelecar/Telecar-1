@@ -20,6 +20,13 @@ public class VH_Seguro_Vehiculo {
     @Lob
     private byte[] foto;
 
+    private String poliza;
+
+    private String Seguro;
+
+    @Temporal(TemporalType.DATE)
+    private Date vencimiento;
+
 
     public VH_Seguro_Vehiculo() {
     }
@@ -54,5 +61,29 @@ public class VH_Seguro_Vehiculo {
 
     public void setFoto(byte[] foto) {
         this.foto = foto;
+    }
+
+    public String getPoliza() {
+        return poliza;
+    }
+
+    public void setPoliza(String poliza) {
+        this.poliza = poliza;
+    }
+
+    public String getSeguro() {
+        return Seguro;
+    }
+
+    public void setSeguro(String seguro) {
+        Seguro = seguro;
+    }
+
+    public Date getVencimiento() {
+        return vencimiento;
+    }
+
+    public void setVencimiento(Date vencimiento) {
+        this.vencimiento = vencimiento;
     }
 }

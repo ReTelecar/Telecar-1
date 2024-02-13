@@ -16,10 +16,8 @@ public class VH_Habil_Municipal {
 
     private String descrip;
 
-    @Temporal(TemporalType.DATE)
-    private Date fecha_Otorg;
-    @Temporal(TemporalType.DATE)
-    private Date fecha_vencimiento;
+    private String fecha_Otorg;
+    private String fecha_vencimiento;
 
     @Lob
     private byte[] foto;
@@ -51,19 +49,19 @@ public class VH_Habil_Municipal {
         this.descrip = descrip;
     }
 
-    public Date getFecha_Otorg() {
+    public String getFecha_Otorg() {
         return fecha_Otorg;
     }
 
-    public void setFecha_Otorg(Date fecha_Otorg) {
+    public void setFecha_Otorg(String fecha_Otorg) {
         this.fecha_Otorg = fecha_Otorg;
     }
 
-    public Date getFecha_vencimiento() {
+    public String getFecha_vencimiento() {
         return fecha_vencimiento;
     }
 
-    public void setFecha_vencimiento(Date fecha_vencimiento) {
+    public void setFecha_vencimiento(String fecha_vencimiento) {
         this.fecha_vencimiento = fecha_vencimiento;
     }
 

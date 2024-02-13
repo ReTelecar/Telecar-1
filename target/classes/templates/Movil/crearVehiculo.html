@@ -273,11 +273,10 @@
                                     <input type="hidden" name="propietarioID" th:value="${propietario.id}"/>
                                     <input type="hidden" name="choferID" th:value="${chofer.id}"/>
 
-                                    <label for="uso">USO:</label>
-                                    <input type="text" id="uso" th:field="*{uso}" required class="form-control"/>
+                                    <label for="uso1">USO:</label>
+                                    <input type="text" id="uso1" th:field="*{uso}" required class="form-control"/>
                                     <label for="vencimiento">VENCIMIENTO:</label>
-                                    <input type="date" id="vencimiento" th:field="*{fecha_vencimiento}" required
-                                           class="form-control"/>
+                                    <input type="date" id="vencimiento" th:field="*{fecha_vencimiento}" required class="form-control"/>
 
                                     <label for="fotoc1">IMAGEN DE LA CEDULA:</label>
                                     <input type="file" id="fotoc1" name="fotoDD" class="form-control"/>
@@ -300,8 +299,28 @@
                     <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive"
                          data-bs-parent="#accordionExample">
                         <div class="accordion-body">
-                            <!-- Contenido del Acordeón 2 -->
-                            Contenido del Acordeón 2.
+                            <form th:action="@{/vehiculo/asignarHabilitacion}" method="post" th:object="${habilitacion}"
+                                  enctype="multipart/form-data">
+                                <div th:if="${cedulaCarga != null}">
+                                    <input type="hidden" name="vehiculoID" th:value="${vehiculo.id}"/>
+                                    <input type="hidden" name="propietarioID" th:value="${propietario.id}"/>
+                                    <input type="hidden" name="choferID" th:value="${chofer.id}"/>
+                                    <input type="hidden" name="cedulaID" th:value="${cedula.id}"/>
+
+                                    <label for="uso">DESCRIPCION:</label>
+                                    <input type="text" id="uso" th:field="*{descrip}" required class="form-control"/>
+
+                                    <label for="OTORGAMIENTO1">OTORGAMIENTO:</label>
+                                    <input type="date" id="OTORGAMIENTO1" th:field="*{fecha_Otorg}" required class="form-control"/>
+                                    <label for="vencimiento1">VENCIMIENTO:</label>
+                                    <input type="date" id="vencimiento1" th:field="*{fecha_vencimiento}" required class="form-control"/>
+
+                                    <label for="fotoc12">IMAGEN DE LA HABILITACION:</label>
+                                    <input type="file" id="fotoc12" name="fotoDF" class="form-control"/>
+                                    <br>
+                                    <button type="submit" class="btn btn-primary">REGISTRAR</button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>

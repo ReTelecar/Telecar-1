@@ -36,6 +36,9 @@ public class VehiculoController {
     private Vehiculo_Propietario_Repositorio vehiculoPropietarioRepositorio;
 
     @Autowired
+    private VH_Habilitacion_Municipal_Repositorio vhHabilitacionMunicipalRepositorio;
+
+    @Autowired
     private Chofer_Repositorio choferRepositorio;
 
     @Autowired
@@ -49,6 +52,7 @@ public class VehiculoController {
     public String crearPersona(Model model) {
         model.addAttribute("vehiculo", new Vehiculo());
         model.addAttribute("cedula", new VH_Cedula_Vehiculo());
+        model.addAttribute("habilitacion", new VH_Cedula_Vehiculo());
 
 
         List<Propietario> propietarios = propietarioRepositorio.findAll();
@@ -75,6 +79,7 @@ public class VehiculoController {
                                  Long idchofer, ModelMap model) {
         model.addAttribute("vehiculo", v);
         model.addAttribute("cedula", new VH_Cedula_Vehiculo());
+        model.addAttribute("habilitacion", new VH_Cedula_Vehiculo());
 
         model.addAttribute("propietario", propietarioRepositorio.findById(idpropietario).get());
 
@@ -106,6 +111,7 @@ public class VehiculoController {
 
         model.addAttribute("vehiculo", v);
         model.addAttribute("cedula", new VH_Cedula_Vehiculo());
+        model.addAttribute("habilitacion", new VH_Cedula_Vehiculo());
 
 
         if (idpropietario != null) {
@@ -161,6 +167,7 @@ public class VehiculoController {
         model.addAttribute("vehiculo", v);
 
         model.addAttribute("cedula", new VH_Cedula_Vehiculo());
+        model.addAttribute("habilitacion", new VH_Cedula_Vehiculo());
 
         //crear propietario_vehiculo
         Propietario_Vehiculo propietarioVehiculo = new Propietario_Vehiculo();
@@ -226,6 +233,7 @@ public class VehiculoController {
 
         model.addAttribute("cedula", c);
         model.addAttribute("vehiculo", vehiculoRepositorio.findById(vehiculoID).get());
+        model.addAttribute("habilitacion", new VH_Cedula_Vehiculo());
 
         model.addAttribute("propietario", propietarioRepositorio.findById(idpropietario).get());
         model.addAttribute("chofer", choferRepositorio.findById(idchofer).get());
@@ -236,6 +244,45 @@ public class VehiculoController {
         model.addAttribute("propietarioCarga", true);
         model.addAttribute("choferCarga", true);
         model.addAttribute("vehiCarga", true);
+        model.addAttribute("cedulaCarga", true);
+
+
+        return "Movil/crearVehiculo.html";
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @RequestMapping(value = "/asignarHabilitacion", method = RequestMethod.POST)
+    public String asignarVehiculoCedula(@ModelAttribute("habilitacion") VH_Habil_Municipal c,
+                                        @RequestParam(name = "vehiculoID", required = false) Long vehiculoID,
+                                        @RequestParam(name = "propietarioID", required = false)
+                                        Long idpropietario,
+                                        @RequestParam(name = "cedulaID", required = false)
+                                            Long idcedula, @RequestParam(name = "choferID", required = false)
+                                        Long idchofer, @RequestParam("fotoDF") MultipartFile fotoDF,
+                                        ModelMap model) throws IOException {
+
+        byte[] fileBytesDF = fotoDF.getBytes();
+
+        c.setVehiculo(vehiculoRepositorio.findById(vehiculoID).get());
+        c.setFoto(fileBytesDF);
+
+        vhHabilitacionMunicipalRepositorio.save(c);
+
+        model.addAttribute("habilitacion", c);
+        model.addAttribute("cedula", vhCedulaVehiculoRepositorio.findById(idcedula));
+        model.addAttribute("vehiculo", vehiculoRepositorio.findById(vehiculoID).get());
+
+        model.addAttribute("propietario", propietarioRepositorio.findById(idpropietario).get());
+        model.addAttribute("chofer", choferRepositorio.findById(idchofer).get());
+
+        List<Persona> personas = personaRepositorio.findAll();
+        model.addAttribute("personas", personas);
+
+        model.addAttribute("propietarioCarga", true);
+        model.addAttribute("choferCarga", true);
+        model.addAttribute("vehiCarga", true);
+        model.addAttribute("cedulaCarga", true);
+        model.addAttribute("habilitacionCarga", true);
 
 
         return "Movil/crearVehiculo.html";

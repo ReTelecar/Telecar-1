@@ -3,6 +3,7 @@ package com.institucion.demo.Institucion.entities;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
+import java.time.LocalTime;
 import java.util.Date;
 
 @Entity
@@ -18,8 +19,8 @@ public class VH_Cedula_Vehiculo {
     private String tipo_licencia;
 
     private String uso;
-    @Temporal(TemporalType.DATE)
-    private Date fecha_vencimiento;
+
+    private String fecha_vencimiento;
 
     @OneToOne
     private Propietario propietario;
@@ -92,11 +93,11 @@ public class VH_Cedula_Vehiculo {
         this.dorso = dorso;
     }
 
-    public Date getFecha_vencimiento() {
+    public String getFecha_vencimiento() {
         return fecha_vencimiento;
     }
 
-    public void setFecha_vencimiento(Date fecha_vencimiento) {
+    public void setFecha_vencimiento(String fecha_vencimiento) {
         this.fecha_vencimiento = fecha_vencimiento;
     }
 

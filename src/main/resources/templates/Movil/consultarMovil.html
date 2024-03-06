@@ -121,7 +121,13 @@ document.addEventListener('DOMContentLoaded', function() {
         rows.forEach(row => {
             const rowDateTime = row.querySelector('td:nth-child(4)').textContent.trim().toLowerCase(); // Assuming the data is in the 4th column
 
-            if (rowDateTime >= fromDateValue && rowDateTime <= toDateValue) {
+            if ((fromDateValue && toDateValue) && rowDateTime >= fromDateValue && rowDateTime <= toDateValue) {
+                row.style.display = '';
+            } else if (fromDateValue && !toDateValue && rowDateTime >= fromDateValue) {
+                row.style.display = '';
+            } else if (!fromDateValue && toDateValue && rowDateTime <= toDateValue) {
+                row.style.display = '';
+            } else if (!fromDateValue && !toDateValue) {
                 row.style.display = '';
             } else {
                 row.style.display = 'none';

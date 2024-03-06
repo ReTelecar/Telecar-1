@@ -59,11 +59,11 @@
         <h1 class="text-center">HISTORIAL DE VIAJES</h1>
         <div class="table-responsive">
             <table class="table table-striped table-bordered table-hover">
-                <label for="fromDate">From:</label>
-                <input type="date" id="fromDate" min="yyyy-mm-dd" max="yyyy-mm-dd">
+                <label for="fromText">From:</label>
+                <input type="text" id="fromText">
 
-                <label for="toDate">To:</label>
-                <input type="date" id="toDate" min="yyyy-mm-dd" max="yyyy-mm-dd">
+                <label for="toText">To:</label>
+                <input type="text" id="toText">
 
                 <thead class="table-dark">
                 <tr>
@@ -104,24 +104,24 @@
         crossorigin="anonymous"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    const fromDate = document.getElementById('fromDate');
-    const toDate = document.getElementById('toDate');
+    const fromText = document.getElementById('fromText');
+    const toText = document.getElementById('toText');
 
-    [fromDate, toDate].forEach(input => {
+    [fromText, toText].forEach(input => {
         input.addEventListener('input', function() {
-            filterTableByDateRange();
+            filterTableByTextRange();
         });
     });
 
-    function filterTableByDateRange() {
-        const fromDateValue = new Date(fromDate.value);
-        const toDateValue = new Date(toDate.value);
+    function filterTableByTextRange() {
+        const fromValue = fromText.value.trim().toLowerCase();
+        const toValue = toText.value.trim().toLowerCase();
 
         const rows = document.querySelectorAll('table tbody tr');
         rows.forEach(row => {
-            const rowDate = new Date(row.querySelector('td:nth-child(4)').textContent); // Assuming the date is in the 4th column
+            const rowValue = row.querySelector('td:nth-child(4)').textContent.trim().toLowerCase(); // Assuming the text is in the 4th column
 
-            if (fromDateValue <= rowDate && rowDate <= toDateValue) {
+            if (rowValue >= fromValue && rowValue <= toValue) {
                 row.style.display = '';
             } else {
                 row.style.display = 'none';

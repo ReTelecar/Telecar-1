@@ -12,7 +12,7 @@
         <div class="row justify-content-end mb-3">
             <div class="col-2 d-flex">
                 <form th:action="@{/vh-CnVia/Con-Interno-E}" method="post" class="d-flex w-100">
-                    <select name="internoSelec" class="form-select me-2 flex-grow-1">
+                    <select name="internoSelec" class="form-select me-2 flex-grow-1" id="internoSelect">
                         <option selected disabled>Interno</option>
                         <option th:each="interno : ${internos}" th:value="${interno}" th:text="${interno}"></option>
                     </select>
@@ -61,10 +61,10 @@
                 <table class="table table-striped table-bordered table-hover">
                     </br>
                     <div class="col-5 d-flex">
-                        <label for="fromText">From:</label>
+                        <label for="fromText">Desde: </label>
                         <input type="text" id="fromText" placeholder="YYYY-MM-DD HH:MM:SS.0">
 
-                        <label for="toText">To:</label>
+                        <label for="toText">Hasta: </label>
                         <input type="text" id="toText" placeholder="YYYY-MM-DD HH:MM:SS.0">
                     </div>
                     </br>
@@ -139,6 +139,18 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const select = document.getElementById('internoSelect');
+    const options = Array.from(select.options);
+
+    options.sort((a, b) => parseInt(a.value) - parseInt(b.value));
+
+    options.forEach(option => {
+        select.appendChild(option);
+    });
+});
+</script>
 </script>
 </body>
 </html>

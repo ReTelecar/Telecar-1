@@ -32,8 +32,7 @@
                 <tr th:each="vehiculo : ${vehiculos}" class="articulo">
                     <td th:text="${vehiculo.id}"></td>
                     <td th:text="${vehiculo.interno}"></td>
-                    <span th:if="${vehiculo.estado == 5}">I</span>
-                    <span th:if="${vehiculo.estado == 1}">H</span>
+                    <td><span th:if="${vehiculo.estado == 5}">I</span><span th:if="${vehiculo.estado == 1}">H</span></td>
                     <td>
                         <button class="btn btn-success activar-btn" data-bs-toggle="modal"
                                 data-bs-target="#confirmarActivar">Activar

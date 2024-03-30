@@ -243,10 +243,10 @@
                                             <label for="comfort_no" class="form-check-label">NO</label>
                                         </div>
                                         <label for="foto1">IMAGEN DEL VEHÍCULO:</label>
-                                        <input type="file" id="foto1"  class="form-control"/>
-                                        <input type="file" id="foto2"  class="form-control"/>
-                                        <input type="file" id="foto3"  class="form-control"/>
-                                        <input type="file" id="foto4"  class="form-control"/>
+                                        <input type="file" id="foto1" class="form-control"/>
+                                        <input type="file" id="foto2" class="form-control"/>
+                                        <input type="file" id="foto3" class="form-control"/>
+                                        <input type="file" id="foto4" class="form-control"/>
                                         <br>
                                         <button type="submit" class="btn btn-primary">REGISTRAR</button>
                                     </div>
@@ -276,7 +276,8 @@
                                     <label for="uso1">USO:</label>
                                     <input type="text" id="uso1" th:field="*{uso}" required class="form-control"/>
                                     <label for="vencimiento">VENCIMIENTO:</label>
-                                    <input type="date" id="vencimiento" th:field="*{fecha_vencimiento}" required class="form-control"/>
+                                    <input type="date" id="vencimiento" th:field="*{fecha_vencimiento}" required
+                                           class="form-control"/>
 
                                     <label for="fotoc1">IMAGEN DE LA CEDULA:</label>
                                     <input type="file" id="fotoc1" name="fotoDD" class="form-control"/>
@@ -311,9 +312,11 @@
                                     <input type="text" id="uso" th:field="*{descrip}" required class="form-control"/>
 
                                     <label for="OTORGAMIENTO1">OTORGAMIENTO:</label>
-                                    <input type="date" id="OTORGAMIENTO1" th:field="*{fecha_Otorg}" required class="form-control"/>
+                                    <input type="date" id="OTORGAMIENTO1" th:field="*{fecha_Otorg}" required
+                                           class="form-control"/>
                                     <label for="vencimiento1">VENCIMIENTO:</label>
-                                    <input type="date" id="vencimiento1" th:field="*{fecha_vencimiento}" required class="form-control"/>
+                                    <input type="date" id="vencimiento1" th:field="*{fecha_vencimiento}" required
+                                           class="form-control"/>
 
                                     <label for="fotoc12">IMAGEN DE LA HABILITACION:</label>
                                     <input type="file" id="fotoc12" name="fotoDF" class="form-control"/>
@@ -390,6 +393,8 @@
         var opcionSeleccionada = select.options[select.selectedIndex].text;
         input.value = opcionSeleccionada;
     }
+
+
 
 </script>
 </body>

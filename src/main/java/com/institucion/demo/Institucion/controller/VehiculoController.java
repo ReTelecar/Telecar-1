@@ -1,5 +1,8 @@
 package com.institucion.demo.Institucion.controller;
 
+
+
+import Util.BaseAutoFlot;
 import com.institucion.demo.Institucion.Excepciones.MiException;
 import com.institucion.demo.Institucion.entities.*;
 import com.institucion.demo.Institucion.repository.*;
@@ -12,7 +15,14 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpSession;
+import javax.transaction.Status;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -46,6 +56,16 @@ public class VehiculoController {
 
     @Autowired
     private VH_Cedula_Vehiculo_Repositorio vhCedulaVehiculoRepositorio;
+
+
+    @Autowired
+    private BaseAutoFlot baseautofloat = new BaseAutoFlot();
+
+    @Autowired
+    private Datos.Vehiculo vehiculo;
+
+    @Autowired
+    private Connection conn = null;
 
     @PreAuthorize("isAuthenticated()")
     @RequestMapping("/crear")
@@ -144,19 +164,19 @@ public class VehiculoController {
                                @RequestParam(value = "foto3", required = false) MultipartFile foto3,
                                @RequestParam(value = "foto4", required = false) MultipartFile foto4) throws MiException, IOException {
 
-        if(foto1 != null && !foto1.isEmpty()  ){
+        if (foto1 != null && !foto1.isEmpty()) {
             byte[] fileBytes1 = foto1.getBytes();
             v.setFoto1(fileBytes1);
         }
-        if(foto2 != null &&  !foto2.isEmpty()){
+        if (foto2 != null && !foto2.isEmpty()) {
             byte[] fileBytes2 = foto2.getBytes();
             v.setFoto2(fileBytes2);
         }
-        if(foto3 != null && !foto3.isEmpty()){
+        if (foto3 != null && !foto3.isEmpty()) {
             byte[] fileBytes3 = foto3.getBytes();
             v.setFoto3(fileBytes3);
         }
-        if(foto4 != null && !foto4.isEmpty()){
+        if (foto4 != null && !foto4.isEmpty()) {
             byte[] fileBytes4 = foto4.getBytes();
             v.setFoto4(fileBytes4);
         }
@@ -215,8 +235,8 @@ public class VehiculoController {
     public String asignarVehiculoCedula(@ModelAttribute("cedula") VH_Cedula_Vehiculo c,
                                         @RequestParam(name = "vehiculoID", required = false) Long vehiculoID,
                                         @RequestParam(name = "propietarioID", required = false)
-                                            Long idpropietario, @RequestParam(name = "choferID", required = false)
-                                            Long idchofer, @RequestParam("fotoDF") MultipartFile fotoDF,
+                                        Long idpropietario, @RequestParam(name = "choferID", required = false)
+                                        Long idchofer, @RequestParam("fotoDF") MultipartFile fotoDF,
                                         @RequestParam("fotoDD") MultipartFile fotoDD,
                                         ModelMap model) throws IOException {
 
@@ -257,7 +277,7 @@ public class VehiculoController {
                                         @RequestParam(name = "propietarioID", required = false)
                                         Long idpropietario,
                                         @RequestParam(name = "cedulaID", required = false)
-                                            Long idcedula, @RequestParam(name = "choferID", required = false)
+                                        Long idcedula, @RequestParam(name = "choferID", required = false)
                                         Long idchofer, @RequestParam("fotoDF") MultipartFile fotoDF,
                                         ModelMap model) throws IOException {
 
@@ -287,4 +307,101 @@ public class VehiculoController {
 
         return "Movil/crearVehiculo.html";
     }
+
+        private Boolean establecerConexion() {
+
+            System.out.println("Inicio de Conexion");
+
+            if (baseautofloat.establecerConexion()) {
+
+                System.out.println("Se establece la Conexion");
+
+                if(baseautofloat.createStatementDestino()) {
+
+                    System.out.println("Se establece el createStatementDestino");
+
+                    this.conn = baseautofloat.getConexion();
+
+                    System.out.println("se establecio la conexion");
+
+                }
+            }
+            return true;
+        }
+
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/telecar-data")
+    public String mostrarDatosTelecar(Model model) {
+
+        Collection<Vehiculo> vehiculos = vehiculoRepositorio.findAll();
+
+        for (Vehiculo i: vehiculos) {
+            System.out.println("vehiculo ---------");
+            System.out.println(i.getId());
+            System.out.println(i.getEstado());
+            System.out.println(i.getInterno());
+        }
+
+        model.addAttribute("vehiculos", vehiculos);
+        //if (establecerConexion()) {
+           // System.out.println("Se estableció la conexión con la base de datos");
+
+            // Ejecutar la consulta SQL
+            //String sqlQuery = "select nro_movil, estado FROM MOVILES";
+            //ResultSet resultSet = baseautofloat.sql(sqlQuery);
+
+            // Procesar los resultados y almacenarlos en el modelo
+            //List<String> resultados = new ArrayList<>();
+            //while (resultSet.next()) {
+            //    String nroMovil = resultSet.getString("nro_movil");
+            //    String estado = resultSet.getString("estado");
+
+                // Modificar el valor de las variables si es necesario
+                // Por ejemplo, cambiar el formato de la fecha
+                // String fechaFormateada = cambiarFormatoFecha(fecha);
+
+                // Agregar los datos modificados al modelo
+            //    String dato = nroMovil + " - " + estado;
+            //    resultados.add(dato);
+            //}
+
+
+            // Devolver el nombre de la vista para mostrar los resultados
+
+        //} else {
+           // System.out.println("Error al crear el statement");
+        //}
+        return "Movil/consultarEstadoMovil.html";
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @RequestMapping(value = "/activarMovil", method = RequestMethod.POST)
+    public String mostrarActivarMovil(HttpSession session, @RequestParam(required = true, name = "idVehiculo") int idVehiculo, @RequestParam(required = false, name = "nro_interno") String nro_interno) {
+        Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+
+        if(establecerConexion()){
+            vehiculo.activar_internoCloud(baseautofloat, idVehiculo, nro_interno, conn, logueado.getNombre());
+        }
+        baseautofloat.desconectar();
+
+
+
+        return "redirect:../vehiculo/telecar-data";
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @RequestMapping(value = "/desactivarMovil", method = RequestMethod.POST)
+    public String mostrarDesactivarMovil(HttpSession session, @RequestParam(required = true, name = "idVehiculo") int idVehiculo, @RequestParam(required = false, name = "nro_interno") String nro_interno) {
+        Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+
+        if(establecerConexion()) {
+            vehiculo.desactivar_internoCloud(baseautofloat, idVehiculo, nro_interno, conn, logueado.getNombre());
+        }
+
+
+        baseautofloat.desconectar();
+        return "redirect:../vehiculo/telecar-data";
+    }
+
 }

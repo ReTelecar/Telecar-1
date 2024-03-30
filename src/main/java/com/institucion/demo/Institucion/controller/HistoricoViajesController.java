@@ -5,12 +5,10 @@ import com.institucion.demo.Institucion.entities.Propietario;
 import com.institucion.demo.Institucion.entities.Usuario;
 import com.institucion.demo.Institucion.entities.historicoViajes;
 import com.institucion.demo.Institucion.repository.*;
-import net.bytebuddy.agent.builder.AgentBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -48,7 +46,7 @@ public class HistoricoViajesController {
         model.addAttribute("notificar", false);
         model.addAttribute("cargarNotas", false);
 
-        if(internoSelec <= 0){
+        if (internoSelec <= 0) {
             model.addAttribute("internoC", false);
         } else {
             model.addAttribute("internoC", true);
@@ -61,8 +59,8 @@ public class HistoricoViajesController {
 
         List<Long> internos = new ArrayList<>();
 
-        for (Long id: vehiculosID) {
-           internos.add(vehiculoRepositorio.findByVehiculo(id));
+        for (Long id : vehiculosID) {
+            internos.add(vehiculoRepositorio.findByVehiculo(id));
         }
 
         model.addAttribute("internos", internos);
@@ -77,9 +75,10 @@ public class HistoricoViajesController {
 
         return "Movil/consultarMovil.html";
     }
+
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/Con-Interno-E")
-    public String consultarInterno(Model model, HttpSession session, @RequestParam(name = "internoSelec",required = true) String internoSelec) {
+    public String consultarInterno(Model model, HttpSession session, @RequestParam(name = "internoSelec", required = true) String internoSelec) {
 
         return "redirect:/vh-CnVia/Con-Hist.Viajes?internoSelec=" + internoSelec;
     }

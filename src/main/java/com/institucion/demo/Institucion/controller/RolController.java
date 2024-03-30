@@ -31,7 +31,7 @@ public class RolController {
 
     @PreAuthorize("isAuthenticated() and hasAuthority('Mostrar_Rol')")
     @RequestMapping("/listar")
-    public String listarUsuario(Model model){
+    public String listarUsuario(Model model) {
 
         List<Rol> roles = rol_servicio.listRoles();
         model.addAttribute("roles", roles);
@@ -93,7 +93,7 @@ public class RolController {
 
     @PreAuthorize("isAuthenticated() and hasAuthority('Eliminar_Rol')")
     @GetMapping("/eliminar/{id}")
-    public String deleteRol(@PathVariable(name="id") Long id) {
+    public String deleteRol(@PathVariable(name = "id") Long id) {
         rol_servicio.delete(id);
         return "redirect:../listar";
     }

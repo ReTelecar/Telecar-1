@@ -56,10 +56,10 @@ public class PropietarioController {
     @RequestMapping(value = "/asignarP", method = RequestMethod.POST)
     public String asignarPersona(@ModelAttribute("propietario") Propietario p, ModelMap model) {
 
-            model.addAttribute("propietario", p);
+        model.addAttribute("propietario", p);
 
-            List<Persona> personas = persona_repositorio.findAll();
-            model.addAttribute("personas", personas);
+        List<Persona> personas = persona_repositorio.findAll();
+        model.addAttribute("personas", personas);
 
 
         return "Propietario/crearPropietario.html";

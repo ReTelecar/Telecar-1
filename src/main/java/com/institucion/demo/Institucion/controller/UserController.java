@@ -26,8 +26,6 @@ public class UserController {
     private Rol_Servicio rol_servicio;
 
 
-
-
     @PreAuthorize("isAuthenticated() and hasAuthority('Usuario_Ver_Roles')")
     @RequestMapping("/listar_r/{id}")
     public String listRoles(@PathVariable(name = "id") Long id, Model model) {
@@ -35,7 +33,7 @@ public class UserController {
 
         HashSet<Rol> newRoles = new HashSet<>();
 
-        for (Rol rol: roles) {
+        for (Rol rol : roles) {
             newRoles.add(rol);
         }
 
@@ -46,7 +44,7 @@ public class UserController {
 
     @PreAuthorize("isAuthenticated() and hasAuthority('Mostrar_Usuario')")
     @RequestMapping("/listar")
-    public String listarUsuario(Model model){
+    public String listarUsuario(Model model) {
 
         List<Usuario> users = usuario_servicio.listAll();
         model.addAttribute("users", users);
@@ -84,7 +82,7 @@ public class UserController {
 
     @PreAuthorize("isAuthenticated() and hasAuthority('Eliminar_Usuario')")
     @GetMapping("/eliminar/{id}")
-    public String deleteUser(@PathVariable(name="id") Long id) {
+    public String deleteUser(@PathVariable(name = "id") Long id) {
         usuario_servicio.delete(id);
         return "redirect:../listar";
     }

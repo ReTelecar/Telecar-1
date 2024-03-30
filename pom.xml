@@ -108,13 +108,6 @@
             <version>10.2.1.jre8</version>
         </dependency>
 		<dependency>
-			<groupId>TelecarCloud</groupId>
-			<artifactId>TelecarCloud</artifactId>
-			<version>1.0.0</version>
-			<scope>system</scope>
-			<systemPath>${project.basedir}/lib/TelecarCloud.jar</systemPath>
-		</dependency>
-		<dependency>
 			<groupId>com.microsoft.sqlserver</groupId>
 			<artifactId>mssql-jdbc</artifactId>
 			<version>12.4.2.jre8</version>
